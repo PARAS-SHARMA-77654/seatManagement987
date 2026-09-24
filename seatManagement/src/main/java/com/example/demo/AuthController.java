@@ -16,6 +16,17 @@ public class AuthController {
         this.authService = authService;
     }
 
+    @PostMapping("/register")
+    public ResponseEntity<LoginResponse> register(@RequestBody LoginRequest request) {
+        boolean created = authService.register(request.getUsername(), request.getPassword());
+
+        if (!created) {
+            return ResponseEntity.status(409).build();
+        }
+
+        return ResponseEntity.ok(new LoginResponse(request.getUsername()));
+    }
+
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest request) {
         boolean success = authService.login(request.getUsername(), request.getPassword());

@@ -11,8 +11,14 @@ public class EventService {
 
     private final Map<String, Event> events = new LinkedHashMap<>();
     private final Map<String, WaitlistManager> waitlists = new LinkedHashMap<>();
+    private final RegistrationFileStore registrationFileStore;
 
     public EventService() {
+        this(new RegistrationFileStore());
+    }
+
+    public EventService(RegistrationFileStore registrationFileStore) {
+        this.registrationFileStore = registrationFileStore;
         addEvent("tech-conference", "Tech Conference", "Oct 14, 2026", "Talks and workshops on where software is headed next.", 50);
         addEvent("music-night", "Music Night", "Oct 21, 2026", "A live evening of local bands and acoustic sets.", 30);
         addEvent("sports-meet", "Sports Meet", "Nov 2, 2026", "Inter-college track and field finals.", 60);
@@ -44,6 +50,8 @@ public class EventService {
 
         RegistrationType type = RegistrationType.valueOf(registrationTypeRaw.toUpperCase());
         Attendee attendee = new Attendee(UUID.randomUUID().toString(), name, email, type, LocalDateTime.now());
-        return manager.register(attendee, seat);
+        Attendee registeredAttendee = manager.register(attendee, seat);
+        registrationFileStore.saveRegistration(eventId, registeredAttendee);
+        return registeredAttendee;
     }
 }

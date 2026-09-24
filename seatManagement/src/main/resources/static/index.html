@@ -139,6 +139,7 @@
         <input type="password" id="password" autocomplete="current-password" required>
       </div>
       <button type="submit">Sign in</button>
+      <button type="button" id="registerBtn" class="secondary">Create account</button>
       <p class="msg" id="msg"></p>
     </form>
   </div>
@@ -147,17 +148,28 @@
 </div>
 
 <script>
-  const API_BASE = "http://localhost:8080";
+  const API_BASE = (window.location.origin && window.location.origin !== 'null')
+    ? window.location.origin
+    : 'http://localhost:8080';
 
-  document.getElementById('loginForm').addEventListener('submit', async (e) => {
-    e.preventDefault();
+  const setAuthSuccess = (username) => {
+    sessionStorage.setItem('username', username);
+    window.location.href = 'events.html';
+  };
+
+  const handleAuthRequest = async (endpoint, successText) => {
     const username = document.getElementById('username').value.trim();
     const password = document.getElementById('password').value;
     const msg = document.getElementById('msg');
     msg.textContent = '';
 
+    if (!username || !password) {
+      msg.textContent = 'Please enter both username and password.';
+      return;
+    }
+
     try {
-      const res = await fetch(`${API_BASE}/api/login`, {
+      const res = await fetch(`${API_BASE}/api/${endpoint}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, password })
@@ -165,14 +177,27 @@
 
       if (res.ok) {
         const data = await res.json();
-        sessionStorage.setItem('username', data.username);
-        window.location.href = 'events.html';
+        msg.textContent = successText;
+        setAuthSuccess(data.username);
+      } else if (res.status === 409) {
+        msg.textContent = 'That username is already taken. Please choose another one.';
       } else {
-        msg.textContent = 'Incorrect username or password.';
+        msg.textContent = endpoint === 'login'
+          ? 'Incorrect username or password.'
+          : 'Could not create the account.';
       }
     } catch (err) {
       msg.textContent = 'Could not reach the server. Is the backend running?';
     }
+  };
+
+  document.getElementById('loginForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    await handleAuthRequest('login', 'Signing in...');
+  });
+
+  document.getElementById('registerBtn').addEventListener('click', async () => {
+    await handleAuthRequest('register', 'Account created!');
   });
 </script>
 

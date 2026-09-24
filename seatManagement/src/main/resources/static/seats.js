@@ -1,3 +1,7 @@
+const API_BASE = (window.location.origin && window.location.origin !== 'null')
+  ? window.location.origin
+  : 'http://localhost:8080';
+
 // Event lookup — matches the cards on events.html.
 // Later this will come from GET /api/events/{id} instead of being hardcoded here.
 const EVENTS = {
@@ -62,7 +66,7 @@ document.getElementById('bookingForm').addEventListener('submit', async (e) => {
 
   // Backend endpoint isn't wired up yet — this is where it plugs in next.
   try {
-    const res = await fetch(`http://localhost:8080/api/events/${eventId}/register`, {
+    const res = await fetch(`${API_BASE}/api/events/${eventId}/register`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload)
@@ -71,9 +75,15 @@ document.getElementById('bookingForm').addEventListener('submit', async (e) => {
     if (res.ok) {
       const data = await res.json();
       msg.style.color = 'var(--accent)';
-      msg.textContent = data.status === 'CONFIRMED'
-        ? `Seat ${selectedSeat} confirmed!`
-        : `Seats are full — you're on the waitlist.`;
+
+      if (data.status === 'CONFIRMED') {
+        msg.textContent = `Seat ${selectedSeat} confirmed!`;
+        setTimeout(() => {
+          window.location.href = 'events.html';
+        }, 1200);
+      } else {
+        msg.textContent = 'Seats are full — you\'re on the waitlist.';
+      }
     } else {
       msg.style.color = '#D96C6C';
       msg.textContent = 'Could not complete the reservation.';

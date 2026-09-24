@@ -1,0 +1,28 @@
+[ {
+  "id" : "57d279aa-f245-46cc-83b6-a09e36973932",
+  "eventId" : "sports-meet",
+  "name" : "wefhfhw",
+  "email" : "hbdcb@gmail.com",
+  "registrationType" : "STANDARD",
+  "status" : "CONFIRMED",
+  "seat" : 27,
+  "registeredAt" : "2026-09-24T13:09:40.325869617"
+}, {
+  "id" : "44b3e0a5-0e77-4980-8629-49d6681cecb4",
+  "eventId" : "sports-meet",
+  "name" : "wefhfhw",
+  "email" : "hbdcb@gmail.com",
+  "registrationType" : "STANDARD",
+  "status" : "CONFIRMED",
+  "seat" : 1,
+  "registeredAt" : "2026-09-24T13:09:41.431930011"
+}, {
+  "id" : "3433d3c1-1d3b-4865-a8f7-2e98093aa224",
+  "eventId" : "tech-conference",
+  "name" : "Alice Example",
+  "email" : "alice@example.com",
+  "registrationType" : "STANDARD",
+  "status" : "CONFIRMED",
+  "seat" : 1,
+  "registeredAt" : "2026-09-24T13:10:16.212939894"
+} ]
