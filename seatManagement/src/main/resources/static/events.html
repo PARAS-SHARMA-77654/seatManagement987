@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Events — Event Seating</title>
+<link rel="stylesheet" href="events.css">
+</head>
+<body>
+
+<header class="topbar">
+  <p class="mark">Event Seating</p>
+  <p class="welcome" id="welcome"></p>
+</header>
+
+<main class="page">
+  <h1>Choose an event</h1>
+  <p class="sub">Pick one to see available seats.</p>
+
+  <div class="grid">
+
+    <a class="card" href="seats.html?event=tech-conference">
+      <p class="date">Oct 14, 2026</p>
+      <h2>Tech Conference</h2>
+      <p class="desc">Talks and workshops on where software is headed next.</p>
+      <p class="seats">42 seats left</p>
+    </a>
+
+    <a class="card" href="seats.html?event=music-night">
+      <p class="date">Oct 21, 2026</p>
+      <h2>Music Night</h2>
+      <p class="desc">A live evening of local bands and acoustic sets.</p>
+      <p class="seats">18 seats left</p>
+    </a>
+
+    <a class="card" href="seats.html?event=sports-meet">
+      <p class="date">Nov 2, 2026</p>
+      <h2>Sports Meet</h2>
+      <p class="desc">Inter-college track and field finals.</p>
+      <p class="seats">5 seats left</p>
+    </a>
+
+  </div>
+</main>
+
+<script>
+  const username = sessionStorage.getItem('username');
+  document.getElementById('welcome').textContent = username ? `Signed in as ${username}` : '';
+</script>
+
+</body>
+</html>

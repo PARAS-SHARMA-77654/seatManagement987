@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sign in — Event Seating</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap');
+
+  :root {
+    --bg: #1C1E26;
+    --card: #23262F;
+    --accent: #E8A33D;
+    --text: #F2EFE9;
+    --muted: #9A9CA6;
+    --teal: #3E6259;
+    --error: #D96C6C;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+  }
+
+  .stub {
+    width: 100%;
+    max-width: 380px;
+  }
+
+  .mark {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: 28px;
+    letter-spacing: -0.01em;
+    margin: 0 0 6px;
+  }
+
+  .tagline {
+    color: var(--muted);
+    font-size: 14px;
+    margin: 0 0 32px;
+    line-height: 1.5;
+  }
+
+  .card {
+    background: var(--card);
+    border: 1px solid #2E313C;
+    border-radius: 10px;
+    padding: 28px;
+  }
+
+  label {
+    display: block;
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+
+  .field {
+    margin-bottom: 18px;
+  }
+
+  input {
+    width: 100%;
+    padding: 11px 12px;
+    background: #1A1C23;
+    border: 1px solid #33363F;
+    border-radius: 6px;
+    color: var(--text);
+    font-size: 15px;
+    font-family: 'Inter', sans-serif;
+    transition: border-color 0.15s ease;
+  }
+
+  input:focus {
+    outline: none;
+    border-color: var(--accent);
+  }
+
+  button {
+    width: 100%;
+    padding: 12px;
+    background: var(--accent);
+    color: #1C1E26;
+    border: none;
+    border-radius: 6px;
+    font-size: 15px;
+    font-weight: 600;
+    font-family: 'Inter', sans-serif;
+    cursor: pointer;
+    margin-top: 6px;
+    transition: filter 0.15s ease;
+  }
+
+  button:hover { filter: brightness(1.08); }
+  button:active { filter: brightness(0.95); }
+
+  .msg {
+    min-height: 18px;
+    font-size: 13px;
+    margin-top: 14px;
+    color: var(--error);
+  }
+
+  .hint {
+    text-align: center;
+    color: var(--muted);
+    font-size: 12.5px;
+    margin-top: 20px;
+    line-height: 1.5;
+  }
+
+  .hint b { color: var(--text); font-weight: 500; }
+</style>
+</head>
+<body>
+
+<div class="stub">
+  <p class="mark">Event Seating</p>
+  <p class="tagline">Sign in to view events and pick your seat.</p>
+
+  <div class="card">
+    <form id="loginForm">
+      <div class="field">
+        <label for="username">Username</label>
+        <input type="text" id="username" autocomplete="username" required>
+      </div>
+      <div class="field">
+        <label for="password">Password</label>
+        <input type="password" id="password" autocomplete="current-password" required>
+      </div>
+      <button type="submit">Sign in</button>
+      <p class="msg" id="msg"></p>
+    </form>
+  </div>
+
+  <p class="hint">Test account — username: <b>guest</b>, password: <b>guest123</b></p>
+</div>
+
+<script>
+  const API_BASE = "http://localhost:8080";
+
+  document.getElementById('loginForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const username = document.getElementById('username').value.trim();
+    const password = document.getElementById('password').value;
+    const msg = document.getElementById('msg');
+    msg.textContent = '';
+
+    try {
+      const res = await fetch(`${API_BASE}/api/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password })
+      });
+
+      if (res.ok) {
+        const data = await res.json();
+        sessionStorage.setItem('username', data.username);
+        window.location.href = 'events.html';
+      } else {
+        msg.textContent = 'Incorrect username or password.';
+      }
+    } catch (err) {
+      msg.textContent = 'Could not reach the server. Is the backend running?';
+    }
+  });
+</script>
+
+</body>
+</html>

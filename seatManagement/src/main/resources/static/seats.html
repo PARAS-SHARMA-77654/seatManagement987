@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Seats — Event Seating</title>
+<link rel="stylesheet" href="seats.css">
+
+</head>
+<body>
+
+<header class="topbar">
+  <a class="mark" href="events.html">Event Seating</a>
+  <p class="welcome" id="welcome"></p>
+</header>
+
+<main class="page">
+  <a class="back" href="events.html">&larr; All events</a>
+  <h1 id="eventName">Event</h1>
+  <p class="sub" id="eventMeta"></p>
+
+  <div class="legend">
+    <span><i class="dot available"></i> Available</span>
+    <span><i class="dot selected"></i> Selected</span>
+    <span><i class="dot taken"></i> Taken</span>
+  </div>
+
+  <div class="seat-grid" id="seatGrid"></div>
+
+  <form class="booking" id="bookingForm">
+    <h2>Reserve your seat</h2>
+
+    <div class="field">
+      <label for="name">Full name</label>
+      <input type="text" id="name" required>
+    </div>
+
+    <div class="field">
+      <label for="email">Email</label>
+      <input type="email" id="email" required>
+    </div>
+
+    <div class="field">
+      <label for="regType">Registration type</label>
+      <select id="regType">
+        <option value="VIP">VIP</option>
+        <option value="STANDARD" selected>Standard</option>
+        <option value="STUDENT">Student</option>
+      </select>
+    </div>
+
+    <p class="selectedSeat" id="selectedSeatLabel">No seat selected yet</p>
+
+    <button type="submit" id="confirmBtn" disabled>Confirm seat</button>
+    <p class="msg" id="msg"></p>
+  </form>
+</main>
+
+<script src="seats.js"></script>
+</body>
+</html>
